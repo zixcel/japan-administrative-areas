@@ -1,0 +1,7 @@
+{
+  "source_repository": "hathq/hat-japan-administrative-areas",
+  "source_head": "4c36aa91fdc4c21d91046d72837633715d7c37ff",
+  "generic_source": "src/areas.rs copied byte-for-byte; HAT interfaces excluded",
+  "history": "full Git ancestry retained",
+  "consumer_switch": "blocked until new official crate exists"
+}

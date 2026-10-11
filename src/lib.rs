@@ -1,40 +1,28 @@
 #![forbid(unsafe_code)]
-
+//! Exact published Japanese subdivision data. No account or role policy.
 mod areas;
-
 pub use areas::ADMINISTRATIVE_AREAS;
-
-pub const PACKAGE_JSON: &str = include_str!("../hat.package.json");
-pub const PACKAGE_ID: &str = "hat/japan-administrative-areas";
-pub const REPOSITORY_ID: &str = "hat-japan-administrative-areas";
-pub const COUNTRY_CODE: &str = "JP";
-pub const OPERATION_ID: &str = "hathq://vocabulary/action/list-administrative-areas/v1";
-
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub struct AdministrativeArea {
     pub code: &'static str,
     pub name_ja: &'static str,
     pub name_en: &'static str,
 }
-
 #[must_use]
-pub fn list_for_country(country_code: &str) -> Option<&'static [AdministrativeArea]> {
-    (country_code == COUNTRY_CODE).then_some(ADMINISTRATIVE_AREAS)
+pub fn find_exact(code: &str) -> Option<&'static AdministrativeArea> {
+    ADMINISTRATIVE_AREAS.iter().find(|area| area.code == code)
 }
-
-/// Selects one released subdivision using exact country and area codes.
-///
-/// # Errors
-///
-/// Returns a stable unresolved reason for an unsupported country or unknown
-/// subdivision. This function never normalizes or guesses user input.
-pub fn select_exact(
-    country_code: &str,
-    area_code: &str,
-) -> Result<&'static AdministrativeArea, &'static str> {
-    let areas = list_for_country(country_code).ok_or("residence-country-unsupported")?;
-    areas
-        .iter()
-        .find(|area| area.code == area_code)
-        .ok_or("administrative-area-unknown")
+#[cfg(test)]
+mod tests {
+    use super::*;
+    #[test]
+    fn exact_codes_are_unique_and_never_guess_residence() {
+        assert_eq!(ADMINISTRATIVE_AREAS.len(), 47);
+        let codes: std::collections::BTreeSet<_> =
+            ADMINISTRATIVE_AREAS.iter().map(|area| area.code).collect();
+        assert_eq!(codes.len(), 47);
+        assert_eq!(find_exact("JP-13").unwrap().name_ja, "東京都");
+        assert!(find_exact("jp-13").is_none());
+        assert!(find_exact("Tokyo").is_none());
+    }
 }
