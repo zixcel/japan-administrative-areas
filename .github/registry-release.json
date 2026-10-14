@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "repository": "zixcel/japan-administrative-areas",
+  "defaultBranch": "main",
+  "requiredWorkflows": [
+    "oss-policy.yml",
+    "verify-cargo.yml"
+  ],
+  "packages": [
+    {
+      "ecosystem": "cargo",
+      "manifest": "Cargo.toml",
+      "name": "zixcel-japan-administrative-areas",
+      "installDirectory": "."
+    }
+  ]
+}
