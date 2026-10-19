@@ -1,4 +1,6 @@
 [package]
+categories = ["data-structures"]
+keywords = ["japan", "administrative-data", "data-validation", "rust"]
 name = "zixcel-japan-administrative-areas"
 version = "0.1.0"
 edition = "2024"
